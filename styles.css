@@ -19,6 +19,10 @@ body {
   display: flex;
   /*items will wrap to mutliple lines, according to their size*/
   flex-wrap: wrap;
+  /*to produce the 3D flip effect add perspective*/
+  /*sets how far in the z plane the object is from the user*/
+  /*the lower the value - bigger the perspective effect*/
+  perspective: 1000px;
 }
 
 .memory-card {
@@ -26,9 +30,14 @@ body {
   width: calc(25% - 10px);
   height: calc(33.333% - 10px);
   margin: 5px;
-  /*relative positioning so the cards don't stack*/
+  /*this is to position the memory-card children*/
   position: relative;
   box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+  transform: scale(1);
+  /*preserve positions them into 3D space vs. flattening them*/
+  transform-style: preserve-3d;
+  /*transition needs to be applied to produce movement effect*/
+  transition: transform .5s;
 }
 
 .front-face,
@@ -36,7 +45,24 @@ body {
   width: 100%;
   height: 100%;
   padding: 20px;
+  /*absolute will remove the cards from their original position and stack them on top of each other*/
   position: absolute;
   border-radius: 5px;
   background: #1C7CCC;
+  backface-visibility: hidden;
+}
+
+.front-face {
+    transform: rotateY(180deg);
+}
+
+/*active pseudo class will be triggered every time the cards are clicked*/
+/*transform will make the cards bigger in size*/
+.memory-card:active {
+ transform: scale(0.97);
+ transition: transform .2s;
+}
+/*to flip the card over 180 deg*/
+.memory-card.flip {
+  transform: rotateY(180deg);
 }
